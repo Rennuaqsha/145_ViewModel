@@ -74,7 +74,8 @@ fun TopHeader() {
         Row {
             Image(painter = painterResource(id = R.drawable.baseline_arrow_back_24), contentDescription = "")
             Text(text = "Register",
-                modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp)
+                modifier = Modifier.padding(horizontal = 5.dp, vertical = 5.dp)
+
             )
         }
     }
@@ -113,9 +114,12 @@ fun SelectJK(
     option: List<String>,
     onSelectionChange: (String) ->Unit = {}
 ){
+    Column {
+        Text(text = "Jenis Kelamin :" )
+    }
     var selectedValue by rememberSaveable { mutableStateOf("") }
 
-    Column (modifier = Modifier.padding(16.dp))
+    Row (modifier = Modifier.padding(16.dp))
     {
         option.forEach{ item ->
             Row (
@@ -136,6 +140,8 @@ fun SelectJK(
     }
 }
 
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TampilForm(cobaViewModel: CobaViewModel = viewModel()){
@@ -154,7 +160,7 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()){
         singleLine = true,
         shape = MaterialTheme.shapes.large,
         modifier = Modifier.fillMaxWidth(),
-        label = { Text(text = "Nama Lengkap")},
+        label = { Text(text = "Username")},
         onValueChange = {textNama = it})
 
     OutlinedTextField(value = textTlp,
@@ -165,12 +171,7 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()){
         label = { Text(text = "Telpon")},
         onValueChange = {textTlp = it})
 
-    OutlinedTextField(value = textAlamat,
-        singleLine = true,
-        shape = MaterialTheme.shapes.large,
-        modifier = Modifier.fillMaxWidth(),
-        label = { Text(text = "Alamat")},
-        onValueChange = {textAlamat = it})
+
 
     OutlinedTextField(value = textEmail,
         singleLine = true,
