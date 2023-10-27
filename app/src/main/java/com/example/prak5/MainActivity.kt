@@ -55,6 +55,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    TopHeader()
+
                     TampilLayout()
                 }
             }
@@ -71,14 +73,16 @@ fun TopHeader() {
     ) {
         Row {
             Image(painter = painterResource(id = R.drawable.baseline_arrow_back_24), contentDescription = "")
-            
+            Text(text = "Register",
+                modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp)
+            )
         }
     }
 
     }
 
 @Composable
-fun TextHasil(namanya: String, telponnya: String, Alamatnya: String, jenisnya: String)
+fun TextHasil(namanya: String, telponnya: String, Alamatnya: String, Email: String, jenisnya: String)
 {
     ElevatedCard (
         elevation = CardDefaults.cardElevation(
@@ -93,6 +97,9 @@ fun TextHasil(namanya: String, telponnya: String, Alamatnya: String, jenisnya: S
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
         )
         Text(text = "Alamat : " + Alamatnya,
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
+        )
+        Text(text = "Email : " + Email,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
         )
         Text(text = "Jenis Kelamin : " + jenisnya,
@@ -136,6 +143,7 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()){
     var textNama by remember { mutableStateOf("") }
     var textTlp by remember { mutableStateOf("") }
     var textAlamat by remember { mutableStateOf("") }
+    var textEmail by remember { mutableStateOf("") }
 
     val context = LocalContext.current
     val dataform: DataForm
@@ -164,12 +172,19 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()){
         label = { Text(text = "Alamat")},
         onValueChange = {textAlamat = it})
 
+    OutlinedTextField(value = textEmail,
+        singleLine = true,
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "Email")},
+        onValueChange = {textEmail = it})
+
     SelectJK(option = DataSource.jenis.map { id -> context.resources.getString(id)},
         onSelectionChange = {cobaViewModel.setJenisK(it)})
     Button(
         modifier = Modifier.fillMaxWidth(),
         onClick = {
-            cobaViewModel.insertData(textNama, textTlp,textAlamat, dataform.sex)
+            cobaViewModel.insertData(textNama, textTlp,textAlamat,textEmail, dataform.sex)
         }){
         Text(text = stringResource(R.string.submit),
             fontSize = 16.sp)
@@ -179,9 +194,12 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()){
         namanya = cobaViewModel.namaUsr,
         telponnya = cobaViewModel.noTelp,
         Alamatnya = cobaViewModel.alamat,
+        Email = cobaViewModel.Email,
         jenisnya = cobaViewModel.jenisKl
 
-        )}
+        )
+
+}
 
 @Composable
 fun TampilLayout(
@@ -196,7 +214,10 @@ fun TampilLayout(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(20.dp)
         ) {
+            TopHeader()
+
             TampilForm()
+
         }
 
     }
