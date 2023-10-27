@@ -140,6 +140,14 @@ fun SelectJK(
     }
 }
 
+@Composable
+fun SelectStat ( option: List<String>,
+                 onSelectionChange: (String) ->Unit = {}
+) {
+    Column {
+        Text(text = "Status :" )
+    }
+}
 
 
 @OptIn(ExperimentalMaterial3Api::class)
