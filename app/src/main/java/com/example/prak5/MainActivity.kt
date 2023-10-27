@@ -3,6 +3,7 @@ package com.example.prak5
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,9 +34,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -60,9 +61,24 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+@Composable
+fun TopHeader() {
+    ElevatedCard (
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        ),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row {
+            Image(painter = painterResource(id = R.drawable.baseline_arrow_back_24), contentDescription = "")
+            
+        }
+    }
+
+    }
 
 @Composable
-fun TextHasil(namanya: String, telponnya: String, jenisnya: String)
+fun TextHasil(namanya: String, telponnya: String, Alamatnya: String, jenisnya: String)
 {
     ElevatedCard (
         elevation = CardDefaults.cardElevation(
@@ -74,6 +90,9 @@ fun TextHasil(namanya: String, telponnya: String, jenisnya: String)
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
         )
         Text(text = "Telepon : " + telponnya,
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
+        )
+        Text(text = "Alamat : " + Alamatnya,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
         )
         Text(text = "Jenis Kelamin : " + jenisnya,
@@ -116,6 +135,7 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()){
 
     var textNama by remember { mutableStateOf("") }
     var textTlp by remember { mutableStateOf("") }
+    var textAlamat by remember { mutableStateOf("") }
 
     val context = LocalContext.current
     val dataform: DataForm
@@ -137,12 +157,19 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()){
         label = { Text(text = "Telpon")},
         onValueChange = {textTlp = it})
 
+    OutlinedTextField(value = textAlamat,
+        singleLine = true,
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "Alamat")},
+        onValueChange = {textAlamat = it})
+
     SelectJK(option = DataSource.jenis.map { id -> context.resources.getString(id)},
         onSelectionChange = {cobaViewModel.setJenisK(it)})
     Button(
         modifier = Modifier.fillMaxWidth(),
         onClick = {
-            cobaViewModel.insertData(textNama,textTlp,dataform.sex)
+            cobaViewModel.insertData(textNama, textTlp,textAlamat, dataform.sex)
         }){
         Text(text = stringResource(R.string.submit),
             fontSize = 16.sp)
@@ -151,7 +178,10 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()){
     TextHasil(
         namanya = cobaViewModel.namaUsr,
         telponnya = cobaViewModel.noTelp,
-        jenisnya = cobaViewModel.jenisKl)}
+        Alamatnya = cobaViewModel.alamat,
+        jenisnya = cobaViewModel.jenisKl
+
+        )}
 
 @Composable
 fun TampilLayout(
@@ -171,3 +201,4 @@ fun TampilLayout(
 
     }
 }
+
